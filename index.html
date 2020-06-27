@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Generate QR-Codes for ILCoin securely using your browser.">
+	<meta name="keywords" content="qrcode ILCoin uri secure javascript client-side download B logo cryptocurrency open source">
+	
+	<!--	
+		All code below is open source AS IS use-at-your-own-risk code.
+		We have built this site to be ad-free, cookie-free, spam-free, and scam-free site for the ILCoin community.
+		The code is written to be readible and understandable, the site's design is intended to be simple and easy to use,
+		and the functionality of this site is intended to be impeccable for the ILCoin community,
+		or anyone else who is looking to generate a simple QR-Code in a no-nonsense manner.
+	-->
+	<link href="https://fonts.googleapis.com/css?family=Khula:400,700" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ILCoin QR Code Generator</title>
+<style>
+
+	* {
+        box-sizing: border-box;
+		font-family: 'Khula', sans-serif;
+	}
+
+	body {
+		margin: 0;
+		background-color: #FAFAFA;
+	}
+
+	input:focus {
+		box-shadow: 0 0 1px 2px #3D67FF;
+		outline: 0;
+	}
+
+	input[type="text"] {
+		width: 100%;
+		font-size: 16px;
+		padding: 6px;
+		border: 1px solid #D3E9F4;
+		border-radius: 4px;
+		color: #3F3F3F;
+		background-color: #FFFFFF;
+	}
+
+	input[type="checkbox"] {
+		display: none;
+	}
+	
+	input[type="checkbox"] + label {
+		height: 22px;
+		width: 22px;
+		display: flex;
+		/*background: #FFFFFF;	/*switch with custom checkbox image for unchecked*/
+		background-image: url('Unchecked_24px.svg');
+		/*background-image: url('test.svg');*/
+		background-size: 22px;
+		background-repeat: no-repeat;
+	}
+
+	input[type="checkbox"]:checked + label {
+		height: 22px;
+		width: 22px;
+		display: flex;
+		/*background: #00ff00;	/*switch with custom checkbox image for checked*/
+		background-image: url('round-check_box-24px.svg');
+		background-size: 22px;
+		background-repeat: no-repeat;
+	}
+
+	.checkbox_container {
+		display: flex;
+	}
+
+	.checkbox_label {
+		padding: 0 0 0 8px;
+	}
+
+	.header {
+		display: flex;
+		flex-direction: row;
+		font-size: 23px;
+		font-weight: bold;
+		padding: 13px 16px 0;
+		border-bottom: 2px solid #f2f2f2;
+		background-color: #FFFFFF;
+	} 
+
+	.header-text {
+		position: relative;
+		left: 5px;
+	}
+
+	.header-icon {
+		position: relative;
+		top: 3px;
+	}
+
+	.page-container {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: space-evenly;
+		padding-top: 48px;
+	}
+
+	.input-container {
+		width: 50%;
+		display: flex;
+		flex-direction: column;
+		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.05);
+		border-radius: 8px;
+		font-size: 16px;
+		color: #3F3F3F;
+		background-color: #FFFFFF;	
+	}
+
+	.tab {
+		display: flex;
+		border-bottom: 2px solid #D3E9F4;
+	}
+
+	.tab button {
+		width: 50%;
+		font-size: 16px;
+		background-color: inherit;
+		border: none;
+		outline: none;
+		padding: 15px;
+		color: gray;
+	}
+
+	/* Change background color of buttons on hover */
+	.tab button:hover {
+		border-radius: 8px 8px 0 0;
+		background-color: #ddd;
+	}
+
+	.tab button.active {
+		color: black;
+		border-bottom: 2px solid #3D67FF;
+	}
+
+	.tabcontent {
+		display: none;
+		flex-direction: column;
+	}
+
+	.address-container {
+		padding: 24px;
+		border-bottom: 2px solid #D3E9F4;
+	}
+	.address_input {
+		padding-right: 36px !important;  /* don't cover up validity icon */
+	}
+
+	/* tooltip functionality added from w3schools */
+	.addr_tooltip {
+		position: relative;
+	}
+	.addr_tooltip .tooltiptext {
+		visibility: hidden;
+		width: 110px;
+		background-color: #373737;
+		color: #fff;
+		text-align: center;
+		border-radius: 6px;
+		padding: 4px 0;
+
+		/* Position the tooltip */
+		position: absolute;
+		z-index: 1;
+
+		/* */
+		bottom: 130%;
+		left: 96%;
+		margin-left: -60px;
+	}
+	.addr_tooltip .tooltiptext::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -12px;  /*moves the arrow horizontally*/
+		border-width: 14px;  /*height of the triangle (arrow)*/
+		border-style: solid;
+		border-color: #373737 transparent transparent transparent;
+	}
+
+	.uri-container {
+		border-radius: 8px;
+		padding: 24px;
+		background-color: #FBFBFB;
+	}
+	.uri-container input {
+		margin-bottom: 10px;
+	}
+
+	.custom-container {
+		padding: 24px;
+	}
+
+	.qr_image_container {
+		width: 30%;
+		min-width: 300px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 34px 50px;
+		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.05);
+		border-radius: 8px;
+		background-size: 240px;
+		background-color: #FFFFFF;	
+		background-repeat: no-repeat;
+		background-position: center 34px;
+		background-image: url('qr_placeholder.png');
+	}
+
+	#overlay_container {
+		position: relative;
+		width: 256px;
+		height: 256px;
+	}
+	#overlay_container canvas, #qrcode_id {
+		position: absolute;
+	}
+	.qr_code_img {
+		width: 256px;
+		height: 256px;
+		z-index: 1;
+	}
+	#canvas_id {
+		z-index: 100;
+	}
+
+	#your_qr_here {
+		text-align: center;
+	}
+	#qr_code_str {
+		text-align: center;
+		font-size: 14px;
+	}
+
+	.qr_desc_div {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-content: flex-start;
+		word-wrap: break-word;
+	}
+
+	.download_button {
+		display: none;
+		width: 256px;
+		height: 50px;
+		font-size: 16px;
+		padding: 10px;
+		margin: 10px;
+		border-radius: 4px;
+		box-shadow: 0 2px 8px 0 rgba(0,0,0,0.05);
+		color: #FFFFFF;
+		background-color: #3D67FF;
+	}
+
+	#btc_logo_img_id {
+		display: none;
+	}
+
+	/* Responsive Design: When the viewport is fewer than 600px wide, activate the following CSS. */
+	@media screen and (max-width:600px) {
+		.header {
+			justify-content: center;
+		}
+		.page-container {
+			flex-direction: column;
+			padding: 10px;
+		}
+		.qr_image_container {
+			width: 100%;
+		}
+		.input-container {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+	}
+
+</style></head>
+<body>
+	<div class="header">
+		<div class="header-icon"><img src="qr_icon.png" id="test_img_id"></div>
+		<div class="header-text"><label> ILCoin QR</label></div>
+	</div>
+	<div class="page-container">
+
+		<div class="input-container">
+			<div class="tab">
+				<button class="tablinks" onclick="selectTab(event, 'address_tab')" id="defaultOpen">ILCoin QR Code</button>
+				<button class="tablinks" onclick="selectTab(event, 'custom_tab')">Custom String QR Code</button>
+			</div>
+			<div id="address_tab" class="tabcontent">
+				<div class="address-container">
+					<label>ILCoin Address</label>
+					<div class="addr_tooltip">
+						<input type="text" spellcheck="false" class="address_input" id="address" oninput="gen_qrcode('addr_change')" onfocusout="lose_address_focus()" onfocus="gain_address_focus()" onmouseover="show_tooltip()" onmouseout="hide_tooltip()">
+						<span class="tooltiptext" id="tooltip">Valid Address</span>
+					</div>
+				</div>
+				<div class="uri-container">
+					<div class="checkbox_container">
+						<div>
+							<input type="checkbox" oninput="gen_qrcode('uri_change')" id="uri">
+							<label for="uri" ></label>
+						</div>
+						<div class="checkbox_label"><label>ILCoin URI</label></div>
+					</div>
+					<br>
+					<label>Amount</label>
+					<input type="text" oninput="gen_qrcode('amt_change')" id="amount">
+					<label>Label</label>
+					<input type="text" oninput="gen_qrcode('label_change')" id="label">
+					<label>Message</label>
+					<input type="text" oninput="gen_qrcode('message_change')" id="message">
+				</div>
+			</div>
+			<div id="custom_tab" class="tabcontent">
+				<div class="custom-container">
+					<label>Custom String</label>
+					<input type="text" oninput="gen_qrcode('custom_change')" id="custom_id">
+				</div>
+			</div>
+		</div>
+		
+		<div class="qr_image_container">
+<div id="overlay_container">
+			<canvas id="canvas_id" width="256" height="256"> </canvas>
+<div class="qr_code_img" id="qrcode_id"></div>
+</div>
+			<div class="qr_desc_div" id="qr_desc_div_id">
+				<strong id="your_qr_here">Your QR Code will show up here!</strong>
+				<label id="qr_code_str">Add information to generate QR Code.</label>
+			</div>
+			<input class="download_button" type="button" id="dl-btn" value="Download">
+		</div>
+	</div>
+<!--Hidden items below.-->
+<img src="ilcoin-logo.jpg" id="btc_logo_img_id">
+<!--Start JS-->
+<script src="qrcode.js"></script>
+<script src="wallet-address-validator.js"></script>
+<script type="text/javascript">
+
+
+//HTML element ID variables.
+var uri_checkbox_obj;
+var amt_obj;
+var label_obj;
+var message_obj;
+var custom_obj;
+var addr_obj;
+
+//Set whenever user modifies an input box, lets gen_qrcode() subroutine know what input was changed.
+var page_change = "";
+
+//Other variables.
+var custom_tab_open = false;
+var addr_valid = false;  //Records whether bitcoin address is valid or not at a given time.
+var addr_empty = true;  //Records whether the address field is empty or not at a given time.
+var stored_addr = "";   //Records the current address field, so that it can be brought back at a later time.
+var amt_valid = false;
+var amt_empty = true;
+var last_amt = "";
+var stored_amt = "";
+var uri_encoded_label = "";
+var label_empty = true;
+var stored_label = "";
+var uri_encoded_message = "";
+var message_empty = true;
+var stored_message = "";
+var uri_checked = false;
+var address_valid_state = "empty";
+
+	//When the page loads, run an initialization function.
+	window.onload = function () {
+		define_html_id_variables();							//Define object variables. 
+		document.getElementById("defaultOpen").click();		//Sets the default open tab.
+	}
+
+	//Function from w3schools: https://www.w3schools.com/howto/howto_js_tabs.asp
+	function selectTab(evt, actionToTake) {			//Handles tab functionality.
+		var i, tabcontent, tablinks;
+		//create list of classes of type tabcontent
+		tabcontent = document.getElementsByClassName("tabcontent");
+		for (i = 0; i < tabcontent.length; i++) {
+			//make invisible
+			tabcontent[i].style.display = "none";
+		}
+		//create list of the tab buttons
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			//make all tab buttons inactive
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		//whichever tab was clicked on, display that tab as active and its content as visible (flex)
+		document.getElementById(actionToTake).style.display = "flex";
+		evt.currentTarget.className += " active";
+		//Important block of code that, with the tab functionality, replaced the legacy custom field functionality.
+		if (actionToTake === "custom_tab"){
+			custom_tab_open = true;
+			gen_qrcode("custom_chage");
+		} else {
+			custom_tab_open = false;
+			gen_qrcode("addr_chage");
+		}
+	}
+	//Generates a QR-code if all values check out.  Called by producing input in various fields above.
+	function gen_qrcode(page_change){
+		//This function sets variables like addr_valid, paving the wave for the clear conditional logic below.
+		get_current_page_state();
+		//Depending on which value was most recently changed, 
+		//the page may need to be updated (i.e. certain fields blanked out).
+		//console.log("page_change= " + page_change);
+		update_page(page_change);
+		var qr_code_value = determine_qr_code_value();
+		//console.log("qr code value: " + qr_code_value);
+		//Clear the last QR Code.
+		hide_qrcode();
+		make_qrcode(qr_code_value);
+	}
+	function get_current_page_state(){
+		check_address();
+		check_amount();
+		check_label();
+		check_message()
+		record_uri_checkbox_state();
+	}
+	//Update page based on change of page_change variable (which records the most recent change to the page by the user).
+	//The "page_change" variable is whichever field was modified (addr_change, amt_change, label_change, message_change, custom_change, or uri_change.)
+	function update_page(page_change){
+		if (page_change == 'uri_change'){  //uri checkbox was just checked or unchecked
+			if (!uri_checked){ //uri was just uchecked 
+				store_values();
+				amt_obj.value = "";
+				label_obj.value = "";
+				message_obj.value = "";
+			} else {  //uri was just checked
+				amt_obj.value = stored_amt;
+				label_obj.value = stored_label;
+				message_obj.value = stored_message; 
+			}
+		// We're forcing generator to add a uri string when the textboxes are empty and something is entered  
+		} else if (uri_checked == false && (page_change == 'amt_change' || page_change == 'label_change' || page_change == 'message_change') ) {
+			if (amt_empty == false || label_empty == false || message_empty == false) {
+			// At this point we know that something is entered into the boxes.
+				//check uri checkbox
+				uri_checkbox_obj.checked = true;
+			}
+		}
+		//Run this again to update variables to the latest page updates.
+		get_current_page_state();
+
+		//These two if statements keep the address input border and valid text acting properly when entering into the custom input.
+		if( document.getElementById("address").value == ""){
+				address_border_on_empty();			
+		}
+		//If focus is NOT the address, remove border.
+		if( document.activeElement.id != "address" ){
+			document.getElementById("address").style.boxShadow = "none";
+		}
+	}
+	function hide_qrcode(){
+		//Don't show a QR Code unless it is a valid one.
+		document.getElementById('qrcode_id').innerHTML = "";
+		const canvas = document.getElementById("canvas_id");
+		const context = canvas.getContext('2d');
+		context.clearRect(0, 0, canvas.width, canvas.height);		//Clear the canvas.
+		document.getElementById("dl-btn").style.display = "none";
+		document.getElementById("your_qr_here").style.display = "block";
+		document.getElementById("qr_code_str").innerHTML = "Add information to generate QR Code.";
+		document.getElementById("qr_code_str").style.fontSize = "14px";
+		document.getElementById("qr_code_str").style.opacity = "1";
+		document.getElementById("qr_desc_div_id").style.marginTop = "0";
+		//document.getElementById("qr_image_container").style.backgroundImage = "url('qr_placeholder.png')";
+	}
+	function make_qrcode(input_text){
+	console.log("input_text: " + input_text );
+	//alert("input_text: " + input_text );
+		var qrcode;
+		if ( input_text != "" ) {
+			//Input fully formed address/uri in readable html.
+			qrcode = new QRCode("qrcode_id");
+			qrcode.makeCode(input_text);
+			document.getElementById("dl-btn").style.display = "block";
+			document.getElementById("your_qr_here").style.display = "none";
+			document.getElementById("qr_code_str").style.opacity = "0.5";
+			document.getElementById("qr_code_str").style.fontSize = "16px";
+			document.getElementById('qr_code_str').innerHTML = input_text;
+			document.getElementById("qr_desc_div_id").style.marginTop = "15px";
+			//document.getElementById("qr_image_container").style.backgroundImage = "none";
+			draw_canvas_with_logo();
+		}
+		else {
+			//something went wrong
+		}
+	}
+	//This function is needed to integrate ILC logo into QR image.
+	function draw_canvas_with_logo() {
+		var canvas = document.getElementById("canvas_id");
+		var ctx = canvas.getContext("2d");
+		var qr_code_img = document.getElementById("qr_img");
+		var btc_logo_img = document.getElementById("btc_logo_img_id");
+		//These are set to avoid a CORS restriction type error.
+		qr_code_img.setAttribute('crossOrigin', 'anonymous');
+		btc_logo_img.setAttribute('crossOrigin', 'anonymous');
+		qr_code_img.onload = function() {
+			ctx.drawImage(qr_code_img, 0, 0);
+			if ( custom_tab_open === false ){  			//Only draw the logo if it's a ILC QR code.
+				ctx.drawImage(btc_logo_img, 96, 96);
+				ctx.lineWidth = 8;						//Make the line thicker.
+				ctx.strokeStyle = "#ffffff";			//Make the line white.
+				ctx.arc(128, 128, 32, 0, 2 * Math.PI);	//Set the size of the circle.
+				<!-- ctx.stroke();							//Draw the circle. -->
+			}
+		}
+	}
+	//Stores the last valid values.
+	function store_values(){
+		stored_amt = amt_obj.value;
+		stored_label = label_obj.value;
+		stored_message = message_obj.value;
+	}
+	//Sets 'addr_empty', 'addr_valid', and 'stored_addr'.
+	function check_address(){
+		var addr_valid_html_obj;
+		//addr_valid_html_obj = document.getElementById('is_address_valid');
+		addr_obj = document.getElementById('address');
+
+		//If address is empty, record it as so. 
+		if (addr_obj.value == ""){
+			addr_empty = true;
+			addr_valid = false;
+		}
+		else {  //Otherwise, check to see if address is valid.
+			addr_empty = false;
+			//This calls the validate function in wallet-address-validator.js file, which returns true or false. 
+			addr_valid = WAValidator.validate(addr_obj.value);
+			//Display whether address is valid to user.
+			if (addr_valid){ 
+				address_border_on_valid();
+			}
+			else {
+				address_border_on_error();
+			}
+		}
+	}
+	//Sets 'amt_valid', 'amt_empty', 'last_amt', and 'stored_amt'.
+	function check_amount() {
+		//Remove any leading zeroes from amount.
+		if( /^0+(\d+(\.\d*)?)/.test(amt_obj.value)) {
+			var match_array;
+			match_array = /^0+(\d+(\.\d*)?)/.exec(amt_obj.value);
+			amt_obj.value = match_array[1]; 
+		}
+		//Check whether amount is valid.
+		//The amount input can have 8 digits and 8 decimal places. 
+		//1 Satoshi = 0.00000001 Bitcoin, lowest amount of btc.
+		if ( /^\d{1,8}(\.\d{1,8})?$/.test(amt_obj.value) ) {
+			amt_valid = true;
+			amt_empty = false;
+		}
+		//Check to see if amount is empty.
+		else if ( amt_obj.value == "" ) {
+			amt_valid = false;
+			amt_empty = true;
+		}
+		//Check to see if amount has hanging decimal point.
+		else if ( /^\d{1,8}\.$/.test(amt_obj.value) ) {
+			amt_valid = false;
+			amt_empty = false;
+		}
+		//Otherwise, input is not a valid number.
+		else {
+			//Replace with last valid amount.
+			amt_obj.value = last_amt;
+		}
+		last_amt = amt_obj.value;
+	}
+	//Sets 'label_empty', 'uri_encoded_label', and 'stored_label'.
+	function check_label() {
+		//If label empty, mark it as such. 
+		if ( label_obj.value == "" ) {
+			label_empty = true;
+			uri_encoded_label = "";
+		}
+		//Otherwise, uri encode label.
+		else {
+			label_empty = false;
+        //Encode URI sensitive characters in label.
+        uri_encoded_label = encodeURIComponent(label_obj.value);
+		}
+	}
+	//Sets 'message_empty', 'uri_encoded_message', and 'stored_message'.
+	function check_message() {
+		//If message empty, mark it as such. 
+		if ( message_obj.value == "" ) {
+			message_empty = true;
+			uri_encoded_message = "";
+		}
+		//Otherwise, uri encode message.
+		else {
+			message_empty = false;
+			//Encode URI sensitive characters in message.
+			uri_encoded_message = encodeURIComponent(message_obj.value);
+		}
+	}
+	//Record whether URI checkbox is presently checked.
+	function record_uri_checkbox_state(){
+		if (uri_checkbox_obj.checked) {
+			uri_checked = true;
+		}
+		else {
+			uri_checked = false;
+		}
+	}
+	//This function builds the ilcoin URI string or sets the qr value to the (valid) ilcoin address or custom input.
+	function determine_qr_code_value(){
+		var qr_value = "";
+		if (!custom_tab_open){  //set in tab function
+			if (addr_valid){
+				if (uri_checked){
+					//Do not generate a QR-Code if amount is not empty and not a valid number.
+					//Written for hanging decimal (i.e. "3.").
+					if (!amt_valid && !amt_empty){
+						qr_value = "";
+						return qr_value;
+					}
+					//Otherwise, generate a QR-Code value in uri format.
+					//Uri format specifications: https://github.com/bitcoin/bips/blob/master/bip-0021.mediawiki
+					else{
+						qr_value = "ilcoin:" + addr_obj.value;
+					}
+					//Create array of fields and one with their values to add to uri.
+					var uri_field_name_array = [];
+					var uri_field_value_array = [];
+					if (amt_valid){
+						uri_field_name_array.push("amount");
+						uri_field_value_array.push(amt_obj.value);
+					}
+					if (!label_empty){
+						uri_field_name_array.push("label");
+						uri_field_value_array.push(uri_encoded_label);
+					}
+					if (!message_empty){
+						uri_field_name_array.push("message");
+						uri_field_value_array.push(uri_encoded_message);
+					}
+					//If fields are present, prepare uri with '?', otherwise, return current uri.
+					if (uri_field_value_array.length > 0){
+						qr_value = qr_value + "?";
+					}
+					else{
+						return qr_value;
+					}
+					//Populate uri with field names and values.
+					while (uri_field_name_array.length > 0){
+						qr_value = qr_value + uri_field_name_array.shift() + "=" + uri_field_value_array.shift();
+						if (uri_field_name_array.length > 0){
+							qr_value = qr_value + "&";
+						}
+					}
+					return qr_value;
+				}
+				//If uri checkbox not checked, then the QR-code is just the address.
+				else{
+					qr_value = addr_obj.value;
+					return qr_value;
+				}
+			}
+			//If address is invalid, no valid qr code value.
+			else{
+				qr_value = "";
+				return qr_value;
+			}
+		}
+		//If custom value is filled, then QR-Code value defaults to that.
+		else{
+			qr_value = custom_obj.value;
+			return qr_value;
+		}
+	}
+
+	// Called at the top of the script.
+	function define_html_id_variables(){
+		uri_checkbox_obj = document.getElementById('uri');
+		amt_obj = document.getElementById('amount');
+		label_obj = document.getElementById('label');
+		message_obj = document.getElementById('message');
+		custom_obj = document.getElementById('custom_id');
+		addr_obj = document.getElementById('address');
+	}
+
+    // Listen for download click.
+    document.getElementById("dl-btn").addEventListener("click", function(){
+		qr_img_src = document.getElementById("canvas_id").toDataURL();
+        var filename = "Custom_QR_Code.png"; 
+        if ( addr_obj.value != "" && custom_tab_open === false) { 
+            filename = addr_obj.value + ".png";
+        }
+        download(filename, qr_img_src);
+    }, false);
+
+    //Download file.
+    function download(fname, data_uri) {
+        //Create temporary a href link html element for downloading image.
+        var element = document.createElement('a');
+        element.setAttribute('href', data_uri);
+        element.setAttribute('download', fname);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        //Simulate download click.
+        element.click();
+        //Destroy a href link html element.
+        document.body.removeChild(element);
+    }
+
+	//Address bar and tooltip cosmetic functionality.
+	function address_border_on_empty (){
+        document.getElementById("address").style.boxShadow = "0 0 1px 2px #3D67FF";
+        document.getElementById("address").style.background = "none";
+        address_valid_state = "empty";
+	}
+    function address_border_on_error (){
+        document.getElementById("address").style.boxShadow = "0 0 1px 2px rgb(255, 0, 0, .4)";
+        document.getElementById("address").style.background = "url(round-cancel-24px.svg) no-repeat scroll 3px 3px";
+        document.getElementById("address").style.backgroundPosition = "98%";
+		document.getElementById("tooltip").innerHTML = "Invalid Address";
+        address_valid_state = "false";
+    }
+    function address_border_on_valid (){
+        document.getElementById("address").style.boxShadow = "0 0 1px 2px rgb(0, 255, 0, .4)";
+        document.getElementById("address").style.background = "url(round-check_circle-24px.svg) no-repeat scroll 3px 3px";
+        document.getElementById("address").style.backgroundPosition = "98%";
+		document.getElementById("tooltip").innerHTML = "Valid Address";
+        address_valid_state = "true";
+    }
+    function lose_address_focus(){
+    	document.getElementById("address").style.boxShadow = "none";
+    }
+    function gain_address_focus(){
+        if (address_valid_state == "true"){
+            address_border_on_valid();
+        }
+        else if (address_valid_state == "false"){
+            address_border_on_error();
+        }
+		else if (address_valid_state == "empty"){
+			address_border_on_empty();
+		}
+    }
+	function show_tooltip(){
+		if ( address_valid_state === "true" || address_valid_state === "false" ){
+			document.getElementById("tooltip").style.visibility = "visible";
+		} 
+	}
+	function hide_tooltip(){
+		document.getElementById("tooltip").style.visibility = "hidden";
+	}
+</script>
+</body>
+
+
+
+
+
+
+
+
+

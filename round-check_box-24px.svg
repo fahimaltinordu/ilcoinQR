@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>round-check_box-24px (1)</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPhone-8-Copy" transform="translate(-36.000000, -258.000000)">
+            <g id="round-check_box-24px-(1)" transform="translate(33.000000, 255.000000)">
+                <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
+                <path d="M19,3 L5,3 C3.9,3 3,3.9 3,5 L3,19 C3,20.1 3.9,21 5,21 L19,21 C20.1,21 21,20.1 21,19 L21,5 C21,3.9 20.1,3 19,3 Z" id="Shape" fill="#3D67FF" fill-rule="nonzero"></path>
+                <path d="M10.71,16.29 C10.32,16.68 9.69,16.68 9.3,16.29 L5.71,12.7 C5.32,12.31 5.32,11.68 5.71,11.29 C6.1,10.9 6.73,10.9 7.12,11.29 L10,14.17 L16.88,7.29 C17.27,6.9 17.9,6.9 18.29,7.29 C18.68,7.68 18.68,8.31 18.29,8.7 L10.71,16.29 Z" id="Path" fill="#FFFFFF" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

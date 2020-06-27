@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>round-check_circle-24px (1)</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPhone-8" transform="translate(-312.000000, -173.000000)">
+            <g id="round-check_circle-24px-(1)" transform="translate(310.000000, 171.000000)">
+                <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
+                <path d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M9.94686907,15.7533685 L7.22201139,12.7570201 C6.9259962,12.4315115 6.9259962,11.9056899 7.22201139,11.5801813 C7.51802657,11.2546727 7.99620493,11.2546727 8.29222011,11.5801813 L10.4857685,13.9839371 L15.7077799,8.24163146 C16.0037951,7.91612285 16.4819734,7.91612285 16.7779886,8.24163146 C17.0740038,8.56714006 17.0740038,9.09296166 16.7779886,9.41847027 L11.0170778,15.7533685 C10.7286528,16.0788772 10.2428843,16.0788772 9.94686907,15.7533685 Z" id="Shape" fill="#1ED47C" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>
